@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Emi Calculation using range slider</title>
+	<style type="text/css">
+		*{
+			box-sizing: border-box;
+			margin:0;
+			font-family: Calibri;
+		}
+		.main{
+			width:100%;
+			height: 690px;
+			float: left;
+			/*background-color: gray;*/
+		}
+		.title{
+			width: 100%;
+			height: 100px;
+			float: left;
+			/*background-color: red;*/
+
+
+		}
+		.title h1{
+			text-align: center;
+			margin-top: 20px;
+			font-size: 42px;
+
+		}
+		.loan_and_roi{
+			width: 100%;
+			height: 180px;
+			float: left;
+			/*background-color: green;*/
+		}
+		.loan_amount{
+			width: 50%;
+			height: 200px;
+			float: left;
+			padding-top: 30px;
+			/*background-color: orange;*/
+		}
+		.loan_amount i{
+			font-size: 24px;
+		}
+		.roi i{
+			font-size: 24px;
+		}
+		.tenure1 i{
+			font-size: 24px;
+		}
+
+
+		.roi{
+			width: 50%;
+			height: 200px;
+			float: left;
+			padding-top: 30px;
+			/*background-color: green;*/
+			text-align: center;
+
+		}
+		.tenure_div{
+			width: 100%;
+			height: 200px;
+			float: left;
+			padding-top: 15px;
+			/*background-color: pink;*/
+		}
+		.tenure1{
+			width: 100%;
+			height: 200px;
+			float: left;
+			padding-top: 30px;
+			background: white;
+			text-align: center;
+
+		}
+
+		.emi_title{
+			width: 100%;
+			height: 210px;
+			float: left;
+			/*background-color: red;*/
+			text-align: center;
+		}
+		.emi_title h1{
+			color: red;
+		}
+		.emi_title p{
+			font-size: 28px;
+		}
+		.emi_title span{
+			font-size: 22px;
+		}
+		.loan_amount,.roi h2{
+			text-align: center;
+		}
+		#loan_amt,#roi,#duration{
+			-webkit-appearance:none;
+		}
+		.slider{
+			width: 350px;
+			height: 5px;
+			background: brown;
+			border-radius: 20px;
+			border:none;
+
+		}
+		.slider::-webkit-slider-thumb{
+			-webkit-appearance:none;
+			width: 30px;
+			height: 30px;
+			border-radius: 30px;
+			background: brown;
+			border:none;
+		}
+
+	</style>
+	<script src="jquery-3.2.1.min.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			
+			$("#loan_count").html("&#8377;&nbsp;0");
+			$("#roi_count").html("0&nbsp;%");
+			$("tenure_count").html("0&nbsp;Years");
+			$("#emi_amount").html("&#8377;&nbsp;0");
+
+			var loan_amt = 0;
+			var roi = 0;
+			var duration = 0;
+			var emi_amount = 0;
+			function emi_cal(loan_amt,roi,duration){
+				var interest = (loan_amt*roi*duration)/100;
+				var total_amt = interest + loan_amt;
+				emi_amount = total_amt/(duration*12);
+				emi_amount = emi_amount.toFixed(2);
+				$("#emi_amount").html("&#8377;&nbsp;"+emi_amount);
+			}
+
+
+
+			$("#loan_amt").change(function(){
+				 loan_amt = parseInt($("#loan_amt").val());
+				$("#loan_count").html(loan_amt);
+				if(roi == 0 && duration == 0){
+					emi_amont = 0;
+					$("#emi_amount").html("&#8377;&nbsp;0"+emi_amount);
+				}
+				else{
+					emi_cal(loan_amt,roi,duration);
+				}
+
+			});
+			$("#roi").change(function(){
+				 roi = parseFloat($("#roi").val());
+				$("#roi_count").html(roi);
+				if(loan_amt == 0 && duration == 0){
+					emi_amount = 0;
+					$("#roi_count").html(emi_amount+"0&nbsp;%");
+				}
+				else{
+					emi_cal(loan_amt,roi,duration);
+				}
+			});
+			$("#duration").change(function(){
+				 duration = parseInt($("#duration").val());
+				$("#tenure_count").html(duration);
+				if(loan_amt == 0 && roi == 0){
+					duration = 0;
+					$("#roi_count").html(emi_amount+"0&nbsp;%");
+					
+				}else{
+					emi_cal(loan_amt,roi,duration);
+				}
+				
+			});
+		
+
+		});
+	</script>
+</head>
+<body>
+	<div class="main">
+		<div class="title">
+			<h1>Emi Calculator</h1>
+		</div>
+		<div class="loan_and_roi">
+			<div class="loan_amount">
+				<h2>Loan Amount:</h2>
+				<br><br>
+				<p>
+					<input type="range" id="loan_amt" min="0" max="10000000" value="0" step="1000" class="slider">
+				</p>
+				<br>
+				<i id="loan_count" class=""></i>
+			</div>
+			<div class="roi">
+				<h2>Rate of interest:</h2>
+				<br><br>
+				<p>
+					<input type="range" id="roi" min="0" max="20" value="0" step="0.25" class="slider">
+				</p>
+				<br>
+				<i id="roi_count" class=""></i>
+			</div>
+		</div>
+		<div class="tenure_div">
+			<div class="tenure1">
+				<h2>Duration</h2>
+				<br><br>
+				<p>
+					<input type="range" id="duration" min="0" max="36" value="0" step="1" class="slider">
+				</p>
+				<br>
+				<i id="tenure_count"></i>
+			</div>		
+		</div>
+		<div class="emi_title">
+			<h1>EMI Payable&nbsp;<span>(Per Month)</span></h1>
+			<br>
+			<p id="emi_amount"></p>
+		</div>
+		
+
+	</div>
+</body>
+</html>

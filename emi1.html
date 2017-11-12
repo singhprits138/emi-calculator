@@ -1,0 +1,170 @@
+
+<html>
+	<head>
+		<script src="jquery-3.2.1.min.js"></script>
+		<script>
+			$(document).ready(function(){
+				$("#l_amt").html("&#8377;&nbsp;0");
+				$("#r_o_i").html("0&nbsp;%");
+				$("#years").html("0&nbsp;Yrs");
+				$("#emi").html("&#8377;&nbsp;0")
+				var amt = 0;
+				var roi = 0;
+				var tenure = 0;
+				var emi = 0;
+				function emi_calc(amt,roi,tenure){
+					var interest = (amt * roi * tenure)/100;
+					var totalloan = amt + interest;
+					emi = totalloan/(tenure * 12);
+					emi = emi.toFixed(2);
+					$("#emi").html("&#8377;&nbsp;"+emi);
+				}
+				$("#loan_amount").change(function(){
+					amt = parseInt($("#loan_amount").val());
+					$("#l_amt").html("&#8377;&nbsp;"+amt);
+					if(roi == 0 && tenure == 0){
+						emi = 0;
+						$("#emi").html("&#8377;&nbsp;"+emi);
+					}
+					else{
+						emi_calc(amt,roi,tenure);
+					}
+					
+					$("#roi").change(function(){
+						roi = parseFloat($("#roi").val());
+						$("#r_o_i").html(roi+"&nbsp;%");
+						if(tenure == 0){
+							emi = 0;
+							$("#emi").html("&#8377;&nbsp;"+emi);
+						}
+						else{
+							emi_calc(amt,roi,tenure);
+						}
+						
+						$("#loan_tenure").change(function(){
+							tenure = parseInt($("#loan_tenure").val());
+							$("#years").html(tenure+"&nbsp;Yrs");
+							emi_calc(amt,roi,tenure);
+						});						
+					});	
+				});
+				
+			});
+		</script>
+		<style>
+			*{
+				box-sizing:border-box;
+				text-align:center;
+			}
+			body{
+				margin:0;
+			}
+			#main{
+				width:100%;
+				float:left;
+			}
+				#calculate{
+					width:100%;
+					float:left;
+					font-family:Montserrat, Calibri, sans-serif;
+				}
+					#heading{
+						width:100%;
+						float:left;
+						font-size:27px;
+					}
+					#input_div1{
+						width:100%;
+						float:left;
+						font-size:21px;
+					}
+						.values_div_1{
+							width:50%;
+							float:left;
+						}
+						.values_div_2{
+							width:100%;
+							float:left;
+						}
+					#input_div2{
+						width:100%;
+						float:left;
+						font-size:21px;
+					}
+					#result{
+						width:100%;
+						float:left;
+						font-family:Roboto, Calibri, Sans-serif;
+						margin:40px 0;
+					}
+					#emi_display h1{
+						font-size: 38px;
+						color: red;
+						font-weight: 400;
+					}
+					#emi_display span{
+						font-size:20px;
+					}
+					#emi_display p{
+						font-size:34px;
+					}
+					
+						
+					.slider{
+						-webkit-appearance:none;
+						background:rgb(237,28,36);
+						width:300px;
+						height:5px;
+						border-radius:20px;
+					}
+					.slider::-webkit-slider-thumb{
+						-webkit-appearance:none;
+						background:rgb(189,15,23);
+						width:25px;
+						height:25px;
+						border:none;
+						border-radius:30px;
+						margin-top:-2px;
+					}
+					.slider:focus{
+						outline:none;
+					}
+		</style>
+	</head>
+	<body>
+		<div id="main">
+			<div id="calculate">
+				<div id="heading">
+					<h1>EMI CALCULATOR</h1>
+				</div>
+				<div id="input_div1">
+					<div class="values_div_1">
+						<p>Loan Amount</p>
+						<input type="range" id="loan_amount" value="0" min="0" step="10000" max="10000000" class="slider" />
+						<br><p id="l_amt" class="count"></p>
+					</div>
+					<div class="values_div_1">
+						<p>ROI</p>
+						<input type="range" id="roi" value="0" min="0" max="12" step="0.25" class="slider" />
+						<br>
+						<p id="r_o_i" class="count"></p>
+					</div>
+				</div>
+				<div id="input_div2">
+					<div class="values_div_2">
+						<p>Loan Tenure</p>
+						<input type="range" id="loan_tenure" value="0" min="1" max="15" class="slider" />
+						<br>
+						<p id="years" class="count"></p>
+					</div>
+				</div>
+			</div>
+			<div id="result">
+				<div id="emi_display">
+					<h1>EMI Payable&nbsp;<span>[Per Month]</span></h1>
+					<p class="emi_result" id="emi"></p>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
